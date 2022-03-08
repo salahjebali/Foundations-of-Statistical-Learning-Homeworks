@@ -26,23 +26,22 @@ beta12.est <- numeric(nsim) # vector of beta2 estimations of mod1
 
 for (i in 1:nsim){
   set.seed(123 + i)
-  X1 <- mvtnorm::rmvnorm(n, mean = mu1, sigma =sigma1)
-  X2 <- mvtnorm::rmvnorm(n, mean = mu1, sigma =sigma1)
+  X <- mvtnorm::rmvnorm(n, mean = mu1, sigma =sigma1)
   e <- rnorm(n,0,1)
   
-  y <- beta0 + beta1*X1+beta2*X2 + e
+  y <- beta0 + beta1*X[,1] + beta2*X[,2] + e
   
-  mod0 <- lm (y ~ X1) # reduced model
-  mod1 <- lm (y ~ X1 + X2) # complete model
+  mod0 <- lm (y ~ X[,1]) # reduced model
+  mod1 <- lm (y ~ X[,1] + X[,2]) # complete model
   
   # Parameters estimations from the reduced model 
-  beta00.est[[i]] <- as.vector(mod0$coeff[1])
-  beta01.est[[i]] <- as.vector(mod0$coeff[2])
+  beta00.est[[i]] <- mod0$coeff[1] # intercept estimations from mod0
+  beta01.est[[i]] <- as.vector(mod0$coeff[2]) # beta1 estimations from mod0 
   
   # Parameters estimations from the complete model
-  beta01.est[[i]] <- as.vector(mod1$coeff[1])
-  beta11.est[[i]] <- as.vector(mod1$coeff[2])
-  beta12.est[[i]] <- as.vector(mod1$coeff[3])
+  beta10.est[[i]] <- mod1$coeff[1] # intercept estimations from mod1
+  beta11.est[[i]] <- mod1$coeff[2] # beta1 estimations from mod1
+  beta12.est[[i]] <- mod1$coeff[3] # berta2 estimations from mod1
   
 }
 
@@ -87,23 +86,22 @@ ind_beta12.est <- numeric(nsim) # vector of beta2 estimations of ind_mod1
 
 for (i in 1:nsim){
   set.seed(123 + i)
-  ind_X1 <- mvtnorm::rmvnorm(n, mean = mu2, sigma = sigma2)
-  ind_X2 <- mvtnorm::rmvnorm(n, mean = mu2, sigma = sigma2)
+  ind_X<- mvtnorm::rmvnorm(n, mean = mu2, sigma = sigma2)
   e <- rnorm(n,0,1)
   
-  ind_y <- beta0 + beta1*ind_X1+beta2*ind_X2 + e
+  ind_y <- beta0 + beta1*ind_X[,1] + beta2*ind_X[,2] + e
   
-  ind_mod0 <- lm (ind_y ~ ind_X1) # reduced model
-  ind_mod1 <- lm (ind_y ~ ind_X1 + ind_X2) # complete model
+  ind_mod0 <- lm (ind_y ~ ind_X[,1]) # reduced model
+  ind_mod1 <- lm (ind_y ~ ind_X[,1] + ind_X[,2]) # complete model
   
   # Parameters estimations from the reduced model
-  ind_beta00.est[[i]] <- as.vector(ind_mod0$coeff[1])
-  ind_beta01.est[[i]] <- as.vector(ind_mod0$coeff[2])
+  ind_beta00.est[[i]] <- ind_mod0$coeff[1] # intercept estimations from ind_mod0
+  ind_beta01.est[[i]] <- ind_mod0$coeff[2] # beta1 estimations from ind_mod0
   
   # Parameters estimations from the complete model
-  ind_beta01.est[[i]] <- as.vector(ind_mod1$coeff[1])
-  ind_beta11.est[[i]] <- as.vector(ind_mod1$coeff[2])
-  ind_beta12.est[[i]] <- as.vector(ind_mod1$coeff[3])
+  ind_beta10.est[[i]] <- ind_mod1$coeff[1] # intercept estimations from ind_mod1
+  ind_beta11.est[[i]] <- ind_mod1$coeff[2] # beta1 estimations from ind_mod1
+  ind_beta12.est[[i]] <- ind_mod1$coeff[3] # beta2 estimations from ind_mod1
 }
 
 
